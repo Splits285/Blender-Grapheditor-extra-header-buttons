@@ -7,8 +7,8 @@ bl_info = {
     "blender": (2, 80, 0),
     "version": (0, 0, 1),
     "description": "Adds controls to change default keyframe type so you don\'t have to keep going into preferences.",
-    "doc_url": "https://github.com/Splits285/SplitsforgottochangetheURL",
-    "tracker_url": "https://github.com/Splits285/SplitsforgottochangetheURL",
+    "doc_url": "https://github.com/Splits285/Blender-Grapheditor-extra-header-buttons/",
+    "tracker_url": "https://github.com/Splits285/Blender-Grapheditor-extra-header-buttons/issues",
     "category": "Graph Editor",
     "support": "COMMUNITY",
 }
