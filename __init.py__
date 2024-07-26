@@ -1,0 +1,60 @@
+#This identifier only is here so blender stops whining that I don't have a "manifest file."
+# SPDX-License-Identifier: UNLICENSE
+
+bl_info = {
+    "name": "Graph editor extra buttons",
+    "author": "Splits285",
+    "blender": (2, 80, 0),
+    "version": (0, 0, 1),
+    "description": "Adds controls to change default keyframe type so you don\'t have to keep going into preferences.",
+    "doc_url": "https://github.com/Splits285/SplitsforgottochangetheURL",
+    "tracker_url": "https://github.com/Splits285/SplitsforgottochangetheURL",
+    "category": "Graph Editor",
+    "support": "COMMUNITY",
+}
+
+import bpy
+
+class GraphExtraPreferences(bpy.types.AddonPreferences):
+    bl_idname = __name__
+
+    show_x_cursor_position: bpy.props.BoolProperty(
+        name="Show X Cursor Position",
+        description="Show a frame_current slider before the Y cursor position",
+        default=1
+    )
+
+    def draw(self, context):
+        self.layout.prop(self, "show_x_cursor_position")
+
+def GraphExtra(self, context):
+    #New key options...
+    self.layout.prop(context.preferences.edit, "keyframe_new_interpolation_type", text="")
+    self.layout.prop(context.preferences.edit, "keyframe_new_handle_type", text="")
+    
+    #Set row units to take a little less space.
+    row = self.layout.row(align=True)
+    row.ui_units_x = 7.5
+    
+    #Cursor controls.
+    if bpy.context.preferences.addons[__name__].preferences.show_x_cursor_position:
+        row.prop(bpy.context.space_data, "show_cursor", icon='CURSOR', icon_only=True, toggle=True)
+        row.prop(context.scene, "frame_current", text="X")
+        row.prop(context.space_data, "cursor_position_y", text="Y")
+    else:
+        row.ui_units_x = 4
+        row.prop(bpy.context.space_data, "show_cursor", icon='CURSOR', icon_only=True, toggle=True)
+        row.prop(context.space_data, "cursor_position_y", text="Y")
+
+
+#Add our elements as we turn the addon on. They could be .prepend-ed as well but that looks weird being ahead of the window type button.
+def register():
+    bpy.utils.register_class(GraphExtraPreferences)
+    bpy.types.GRAPH_HT_header.append(GraphExtra)
+
+def unregister():
+    bpy.utils.unregister_class(GraphExtraPreferences)
+    bpy.types.GRAPH_HT_header.remove(GraphExtra)
+
+if __name__ == "__main__":
+    register()
